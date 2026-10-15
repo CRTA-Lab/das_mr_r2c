@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:macro name="ackermann_traction_joint" params="joint_name">
+    <joint name="${joint_name}">
+      <command_interface name="velocity">
+        <param name="min">-20.0</param>
+        <param name="max">20.0</param>
+      </command_interface>
+      <state_interface name="position">
+        <param name="initial_value">0.0</param>
+      </state_interface>
+      <state_interface name="velocity">
+        <param name="initial_value">0.0</param>
+      </state_interface>
+    </joint>
+  </xacro:macro>
+
+  <xacro:macro name="ackermann_steering_joint" params="joint_name max_steering">
+    <joint name="${joint_name}">
+      <command_interface name="position">
+        <param name="min">${-max_steering}</param>
+        <param name="max">${max_steering}</param>
+      </command_interface>
+      <state_interface name="position">
+        <param name="initial_value">0.0</param>
+      </state_interface>
+    </joint>
+  </xacro:macro>
+
+  <xacro:macro name="ackermann_ros2_control" params="name max_steering">
+    <ros2_control name="${name}" type="system">
+      <hardware>
+        <plugin>mock_components/GenericSystem</plugin>
+        <param name="calculate_dynamics">true</param>
+      </hardware>
+      <xacro:ackermann_traction_joint joint_name="rear_left_wheel_joint"/>
+      <xacro:ackermann_traction_joint joint_name="rear_right_wheel_joint"/>
+      <xacro:ackermann_steering_joint joint_name="front_left_steering_joint" max_steering="${max_steering}"/>
+      <xacro:ackermann_steering_joint joint_name="front_right_steering_joint" max_steering="${max_steering}"/>
+    </ros2_control>
+  </xacro:macro>
+
+</robot>
