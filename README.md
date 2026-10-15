@@ -3,7 +3,7 @@
 ## Build
 ```bash
 mkdir -p pas_r2c_ws/src
-git clone 
+git clone https://github.com/CRTA-Lab/das_mr_r2c.git
 cd ~/pas_r2c_ws
 colcon build --packages-select das_mr_r2c
 source install/setup.bash
